@@ -1,0 +1,32 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+sns.set(style="whitegrid")
+
+catering_sale = 'D:/Python37/lncind/数据/iris.xlsx'
+df = pd.read_excel(catering_sale)
+print(df)
+
+
+iris = pd.melt(df, "species", var_name="measurement")  # "Melt" the dataset to "long-form" or "tidy" representation
+
+
+f, ax = plt.subplots()  # Initialize the figure
+sns.despine(bottom=True, left=True)
+
+
+sns.stripplot(x="value", y="measurement", hue="species",
+              data=iris, dodge=True, alpha=.25, zorder=1)  # Show each observation with a scatterplot
+
+
+sns.pointplot(x="value", y="measurement", hue="species",
+              data=iris, dodge=.532, join=False, palette="dark",
+              markers="d", scale=.75, ci=None)  # Show the conditional means
+
+
+handles, labels = ax.get_legend_handles_labels()  # Improve the legend
+ax.legend(handles[3:], labels[3:], title="species",
+          handletextpad=0, columnspacing=1,
+          loc="lower right", ncol=3, frameon=True)
+
+plt.show()
