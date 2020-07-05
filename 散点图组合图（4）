@@ -1,0 +1,35 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set(style="ticks")
+
+catering_sale = 'D:/Python37/lncind/数据/iris.xlsx'
+
+
+df = pd.read_excel(catering_sale)
+print(df)
+
+g = sns.PairGrid(df)
+g.map(plt.scatter, s=50, edgecolor="white") #图1
+
+g = sns.PairGrid(df)
+g.map_diag(plt.hist)
+g.map_offdiag(plt.scatter, s=50, edgecolor="white") #图2
+
+g = sns.PairGrid(df, hue="species")
+g.map_diag(plt.hist)
+g.map_offdiag(plt.scatter, s=50, edgecolor="white")
+g.add_legend() #图3
+
+g = sns.PairGrid(df, vars=["sepal_length", "sepal_width"], hue="species")
+g.map(plt.scatter, s=50, edgecolor="white") #图4
+
+g = sns.PairGrid(df)
+g.map_upper(plt.scatter, s=50, edgecolor="white")
+g.map_lower(sns.kdeplot)
+g.map_diag(sns.kdeplot, lw=3, legend=False) #图5
+
+sns.pairplot(df, hue="species", height=2.5) #图6
+
+g = sns.pairplot(df, hue="species", palette="Set2", diag_kind="kde", height=2.5) #图7
+plt.show()
