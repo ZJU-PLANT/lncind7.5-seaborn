@@ -1,0 +1,12 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+catering_sale = 'D:/Python37/lncind/数据/titanic.xlsx'
+
+
+df = pd.read_excel(catering_sale)
+print(df)
+
+sns.barplot(x='class',y='survived',data=df)
+plt.show()
