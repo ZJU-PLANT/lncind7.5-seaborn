@@ -1,0 +1,52 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set(style="darkgrid")
+
+catering_sale = 'D:/Python37/lncind/数据/fmri.xlsx'
+
+
+df = pd.read_excel(catering_sale)
+print(df)
+
+
+sns.relplot(x="timepoint", y="signal", kind="line", data=df)  #图1
+sns.relplot(x="timepoint", y="signal", ci=None, kind="line", data=df)  #图2
+sns.relplot(x="timepoint", y="signal", kind="line", ci="sd", data=df)  #图3
+sns.relplot(x="timepoint", y="signal", estimator=None, kind="line", data=df)  #图4
+sns.relplot(x="timepoint", y="signal", hue="event", kind="line", data=df)  #图5
+sns.relplot(x="timepoint", y="signal", hue="region", style="event", kind="line", data=df)  #图6
+sns.relplot(x="timepoint", y="signal", hue="region", style="event", dashes=False, markers=True, kind="line", data=df)  #图7
+sns.relplot(x="timepoint", y="signal", hue="event", style="event", kind="line", data=df)  #图8
+sns.relplot(x="timepoint", y="signal", hue="region", units="subject", estimator=None,
+            kind="line", data=df.query("event == 'stim'"))  #图9
+sns.relplot(x="timepoint", y="signal", hue="subject", col="region", row="event", height=3,
+            kind="line", estimator=None, data=df)  #图10
+sns.relplot(x="timepoint", y="signal", hue="event", style="event", col="subject", col_wrap=5,
+            height=3, aspect=.75, linewidth=2.5, kind="line", data=df.query("region == 'frontal'"))  #图11
+
+
+
+catering_sale = 'D:/Python37/lncind/dots.xlsx'
+df1 = pd.read_excel(catering_sale).query("align == 'dots'")
+print(df1)
+
+
+sns.relplot(x="time", y="firing_rate", hue="coherence", style="choice", kind="line", data=df1)  #图12
+
+palette = sns.cubehelix_palette(light=.8, n_colors=6)
+sns.relplot(x="time", y="firing_rate", hue="coherence", style="choice", palette=palette, kind="line", data=df1)  #图13
+
+from matplotlib.colors import LogNorm
+palette = sns.cubehelix_palette(light=.7, n_colors=6)
+sns.relplot(x="time", y="firing_rate", hue="coherence", style="choice", hue_norm=LogNorm(), kind="line", data=df1)  #图14
+
+sns.relplot(x="time", y="firing_rate", size="coherence", style="choice", kind="line", data=df1)  #图15
+sns.relplot(x="time", y="firing_rate", hue="coherence", size="choice", palette=palette, kind="line", data=df1)  #图16
+
+df2 = pd.DataFrame(dict(time=pd.date_range("2017-1-1", periods=500), value=np.random.randn(500).cumsum()))
+g = sns.relplot(x="time", y="value", kind="line", data=df2)
+g.fig.autofmt_xdate()  #图17
+
+plt.show()
