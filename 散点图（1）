@@ -1,0 +1,32 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set(style="darkgrid")
+
+catering_sale = 'D:/Python37/lncind/数据/散点图1.xlsx'
+
+
+df = pd.read_excel(catering_sale)
+print(df)
+
+sns.relplot(x="total_bill", y="tip", data=df) #图1
+sns.relplot(x="total_bill", y="tip", hue="smoker", data=df) #图2
+sns.relplot(x="total_bill", y="tip", hue="smoker", style="smoker", data=df) #图3
+sns.relplot(x="total_bill", y="tip", hue="smoker", style="time", data=df) #图4
+sns.relplot(x="total_bill", y="tip", hue="size", data=df) #图5
+sns.relplot(x="total_bill", y="tip", hue="size", palette="ch:r=-.5,l=.75", data=df) #图6
+sns.relplot(x="total_bill", y="tip", size="size", data=df) #图7
+sns.relplot(x="total_bill", y="tip", size="size", sizes=(15, 200), data=df) #图8
+sns.relplot(x="total_bill", y="tip", hue="smoker", col="time", data=df)  #图9
+
+df1 = pd.DataFrame(dict(time=np.arange(500), value=np.random.randn(500).cumsum()))
+g = sns.relplot(x="time", y="value", kind="line", data=df1)
+g.fig.autofmt_xdate()  #图10
+
+df2 = pd.DataFrame(np.random.randn(500, 2).cumsum(axis=0), columns=["x", "y"])
+sns.relplot(x="x", y="y", sort=False, kind="line", data=df2)  #图11
+
+
+
+plt.show()
