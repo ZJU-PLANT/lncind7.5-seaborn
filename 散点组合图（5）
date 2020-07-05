@@ -1,0 +1,87 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+catering_sale = 'D:/Python37/lncind/数据/散点图1.xlsx'
+
+
+df = pd.read_excel(catering_sale)
+print(df)
+
+g = sns.FacetGrid(df, col="time")
+g.map(plt.hist, "tip") #图1
+
+g = sns.FacetGrid(df, col="sex", hue="smoker")
+g.map(plt.scatter, "total_bill", "tip", alpha=.7)
+g.add_legend() #图2
+
+g = sns.FacetGrid(df, row="smoker", col="time", margin_titles=True)
+g.map(sns.regplot, "size", "total_bill", color=".3", fit_reg=False, x_jitter=.1) #图3
+
+g = sns.FacetGrid(df, col="day", height=4, aspect=.5)
+g.map(sns.barplot, "sex", "total_bill") #图4
+
+ordered_days = df.day.value_counts().index
+g = sns.FacetGrid(df, row="day", row_order=ordered_days, height=1.7, aspect=4,)
+g.map(sns.distplot, "total_bill", hist=False, rug=True) #图5
+
+pal = dict(Lunch="seagreen", Dinner="gray")
+g = sns.FacetGrid(df, hue="time", palette=pal, height=5)
+g.map(plt.scatter, "total_bill", "tip", s=50, alpha=.7, linewidth=.5, edgecolor="white")
+g.add_legend() #图6
+
+g = sns.FacetGrid(df, hue="sex", palette="Set1", height=5, hue_kws={"marker": ["^", "v"]})
+g.map(plt.scatter, "total_bill", "tip", s=100, linewidth=.5, edgecolor="white")
+g.add_legend() #图7
+
+with sns.axes_style("white"):
+    g = sns.FacetGrid(df, row="sex", col="smoker", margin_titles=True, height=2.5)
+g.map(plt.scatter, "total_bill", "tip", color="#334488", edgecolor="white", lw=.5);
+g.set_axis_labels("Total bill (US Dollars)", "Tip");
+g.set(xticks=[10, 30, 50], yticks=[2, 6, 10]);
+g.fig.subplots_adjust(wspace=.02, hspace=.02) #图8
+
+g = sns.FacetGrid(df, col="smoker", margin_titles=True, height=4)
+g.map(plt.scatter, "total_bill", "tip", color="#338844", edgecolor="white", s=50, lw=1)
+for ax in g.axes.flat:
+    ax.plot((0, 50), (0, .2 * 50), c=".2", ls="--")
+g.set(xlim=(0, 60), ylim=(0, 14)) #图9
+
+from scipy import stats
+def quantile_plot(x, **kwargs):
+    qntls, xr = stats.probplot(x, fit=False)
+    plt.scatter(xr, qntls, **kwargs)
+g = sns.FacetGrid(df, col="sex", height=4)
+g.map(quantile_plot, "total_bill") #图10
+
+def qqplot(x, y, **kwargs):
+    _, xr = stats.probplot(x, fit=False)
+    _, yr = stats.probplot(y, fit=False)
+    plt.scatter(xr, yr, **kwargs)
+g = sns.FacetGrid(df, col="smoker", height=4)
+g.map(qqplot, "total_bill", "tip") #图11
+
+g = sns.FacetGrid(df, hue="time", col="sex", height=4)
+g.map(qqplot, "total_bill", "tip")
+g.add_legend() #图12
+
+g = sns.FacetGrid(df, hue="time", col="sex", height=4, hue_kws={"marker": ["s", "D"]})
+g.map(qqplot, "total_bill", "tip", s=40, edgecolor="w")
+g.add_legend() #图13
+
+def hexbin(x, y, color, **kwargs):
+    cmap = sns.light_palette(color, as_cmap=True)
+    plt.hexbin(x, y, gridsize=15, cmap=cmap, **kwargs)
+with sns.axes_style("dark"):
+    g = sns.FacetGrid(df, hue="time", col="time", height=4)
+g.map(hexbin, "total_bill", "tip", extent=[0, 50, 0, 10]) #图14
+
+g = sns.PairGrid(df, hue="size", palette="GnBu_d")
+g.map(plt.scatter, s=50, edgecolor="white")
+g.add_legend() #图15
+
+g = sns.PairGrid(df, y_vars=["tip"], x_vars=["total_bill", "size"], height=4)
+g.map(sns.regplot, color=".3")
+g.set(ylim=(-1, 11), yticks=[0, 5, 10]) #图16
+
+plt.show()
