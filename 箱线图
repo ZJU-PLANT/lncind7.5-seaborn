@@ -1,0 +1,23 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+
+catering_sale = 'D:/Python37/lncind/数据/titanic.xlsx'
+
+
+df = pd.read_excel(catering_sale)
+print(df)
+
+sns.catplot(x="sex", y="survived", hue="class", kind="bar", data=df) #柱状图
+sns.catplot(x="deck", kind="count", palette="ch:.25", data=df)
+sns.catplot(y="deck", hue="class", kind="count",palette="pastel", edgecolor=".6", data=df)
+
+sns.catplot(x="sex", y="survived", hue="class", kind="point", data=df) #线状图
+sns.catplot(x="class", y="survived", hue="sex", markers=["^", "o"], linestyles=["-", "--"], kind="point", data=df)
+
+g = sns.catplot(x="fare", y="survived", row="class", kind="box", orient="h", height=1.5, aspect=4,
+                data=df.query("fare > 0"))
+g.set(xscale="log")
+
+plt.show()
