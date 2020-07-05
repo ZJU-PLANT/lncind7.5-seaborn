@@ -1,0 +1,37 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+catering_sale = 'D:/Python37/lncind/数据/散点图1.xlsx'
+sns.set(style="ticks", color_codes=True)
+
+df = pd.read_excel(catering_sale)
+print(df)
+
+sns.catplot(x="day", y="total_bill", data=df) #画分散的散点图
+sns.catplot(x="day", y="total_bill", jitter=False, data=df) #画一列散点图
+sns.catplot(x="day", y="total_bill", kind="swarm", data=df) #画蜂窝式散点图
+sns.catplot(x="day", y="total_bill", hue="sex", kind="swarm", data=df) #画蜂窝式散点图,区分性别或其他类型
+sns.catplot(x="size", y="total_bill", kind="swarm", data=df.query("size != 3"))
+sns.catplot(x="smoker", y="tip", order=["No", "Yes"], data=df)
+sns.catplot(x="total_bill", y="day", hue="time", kind="swarm", data=df) #画横向分散的散点图
+
+
+sns.catplot(x="day", y="total_bill", kind="box", data=df) #画箱线图
+sns.catplot(x="day", y="total_bill", hue="smoker", kind="box", data=df) #画分类的箱线图
+
+df["weekend"] = df["day"].isin(["Sat", "Sun"])
+sns.catplot(x="day", y="total_bill", hue="weekend", kind="box", dodge=False, data=df)
+
+sns.catplot(x="total_bill", y="day", hue="sex", kind="violin", data=df)
+sns.catplot(x="total_bill", y="day", hue="sex",kind="violin", bw=.15, cut=0, data=df)
+sns.catplot(x="day", y="total_bill", hue="sex", kind="violin", split=True, data=df)
+sns.catplot(x="day", y="total_bill", hue="sex", kind="violin", inner="stick", split=True, palette="pastel", data=df)
+
+g = sns.catplot(x="day", y="total_bill", kind="violin", inner=None, data=df)
+sns.swarmplot(x="day", y="total_bill", color="k", size=3, data=df, ax=g.ax)
+
+sns.catplot(x="day", y="total_bill", hue="smoker", col="time", aspect=.6, kind="swarm", data=df)
+
+
+plt.show()
