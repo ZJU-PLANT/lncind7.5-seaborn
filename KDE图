@@ -1,0 +1,30 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+sns.set(style="darkgrid")
+
+catering_sale = 'D:/Python37/lncind/数据/iris.xlsx'
+df = pd.read_excel(catering_sale)
+print(df)
+
+
+setosa = df.query("species == 'setosa'") # Subset the iris dataset by species
+virginica = df.query("species == 'virginica'")
+
+
+f, ax = plt.subplots(figsize=(6, 8)) # Set up the figure
+ax.set_aspect("equal")
+
+
+ax = sns.kdeplot(setosa.sepal_width, setosa.sepal_length,
+                 cmap="Reds", shade=True, shade_lowest=False)  # Draw the two density plots
+ax = sns.kdeplot(virginica.sepal_width, virginica.sepal_length,
+                 cmap="Blues", shade=True, shade_lowest=False)
+
+
+red = sns.color_palette("Reds")[-2] # Add labels to the plot
+blue = sns.color_palette("Blues")[-2]
+ax.text(2.5, 8.2, "virginica", size=16, color=blue)
+ax.text(3.8, 4.5, "setosa", size=16, color=red)
+
+plt.show()
