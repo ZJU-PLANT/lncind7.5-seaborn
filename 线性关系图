@@ -1,0 +1,41 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+
+sns.set(color_codes=True)
+
+catering_sale = 'D:/Python37/lncind/数据/散点图1.xlsx'
+
+
+df = pd.read_excel(catering_sale)
+print(df)
+
+sns.regplot(x="total_bill", y="tip", data=df)  #图1
+sns.lmplot(x="total_bill", y="tip", data=df)  #图2
+sns.lmplot(x="size", y="tip", data=df)   #图3
+sns.lmplot(x="size", y="tip", data=df, x_jitter=.05)  #图4
+sns.lmplot(x="size", y="tip", data=df, x_estimator=np.mean)   #图5
+
+sns.jointplot("total_bill", "tip", data=df, kind="reg", truncate=False, xlim=(0, 60),
+                  ylim=(0, 12), color="m", height=7)   #图6
+
+df["big_tip"] = (df.tip / df.total_bill) > .15
+sns.lmplot(x="total_bill", y="big_tip", data=df, y_jitter=.03)   #图7
+
+sns.lmplot(x="total_bill", y="tip", hue="smoker", data=df)  #图8
+sns.lmplot(x="total_bill", y="tip", hue="smoker", data=df, markers=["o", "x"], palette="Set1") #图9
+sns.lmplot(x="total_bill", y="tip", hue="smoker", col="time", data=df)   #图10
+sns.lmplot(x="total_bill", y="tip", hue="smoker", col="time", row="sex", data=df) #图11
+
+f, ax = plt.subplots(figsize=(5, 6))
+sns.regplot(x="total_bill", y="tip", data=df, ax=ax)  #图12
+sns.lmplot(x="total_bill", y="tip", col="day", data=df, col_wrap=2, height=3)  #图13
+sns.lmplot(x="total_bill", y="tip", col="day", data=df, aspect=.5)  #图14
+
+sns.jointplot(x="total_bill", y="tip", data=df, kind="reg")  #图15
+sns.pairplot(df, x_vars=["total_bill", "size"], y_vars=["tip"], height=5, aspect=.8, kind="reg") #图16
+sns.pairplot(df, x_vars=["total_bill", "size"], y_vars=["tip"], hue="smoker", height=5, aspect=.8, kind="reg")  #图17
+
+
+plt.show()
