@@ -1,0 +1,23 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+sns.set(style="ticks")
+
+catering_sale = 'D:/Python37/lncind/数据/planets.xlsx'
+df = pd.read_excel(catering_sale)
+print(df)
+
+f, ax = plt.subplots(figsize=(7, 6))  # Initialize the figure with a logarithmic x axis
+ax.set_xscale("log")
+
+sns.boxplot(x="distance", y="method", data=df, whis=[0, 100], palette="vlag")  # Plot the orbital period with horizontal boxes
+sns.swarmplot(x="distance", y="method", data=df, size=2, color=".3", linewidth=0)  # Add in points to show each observation
+
+
+ax.xaxis.grid(True)
+ax.set(ylabel="")
+sns.despine(trim=True, left=True)  # Tweak the visual presentation
+
+
+plt.show()
